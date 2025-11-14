@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek ODE Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="container-app">
+        <div id="app-calculator">
+            <div id="calculator-container-input-user">
+                <h1>Calculadora Ecuaciones Diferenciales</h1>
+                <textarea id="equationInput" placeholder="Ej: dy/dx = y" rows="5"></textarea>
+                
+                <div id="calculatorButtons">
+                    <button class="calc-btn func" data-value="sin(">sin</button>
+                    <button class="calc-btn func" data-value="cos(">cos</button>
+                    <button class="calc-btn func" data-value="tan(">tan</button>
+                    <button class="calc-btn func" data-value="log(">log</button>
+                    <button class="calc-btn func" data-value="exp(">exp</button>
+                    <button class="calc-btn clear" data-value="C"><img src="{{ url_for('static', filename='images/borrar-icon.png') }}" alt="borrar icon"></button>
+
+                    <button class="calc-btn var" data-value="x">x</button>
+                    <button class="calc-btn var" data-value="y">y</button>
+                    <button class="calc-btn var" data-value="t">t</button>
+                    <button class="calc-btn paren" data-value="(">(</button>
+                    <button class="calc-btn paren" data-value=")">)</button>
+                    <button class="calc-btn operator" data-value="^">^</button>
+
+                    <button class="calc-btn" data-value="7">7</button>
+                    <button class="calc-btn" data-value="8">8</button>
+                    <button class="calc-btn" data-value="9">9</button>
+                    <button class="calc-btn diff" data-value="d/dx(">d/dx</button>
+                    <button class="calc-btn diff" data-value="d/dy(">d/dy</button>
+                    <button class="calc-btn integral" data-value="integrate(">∫</button>
+
+                    <button class="calc-btn" data-value="4">4</button>
+                    <button class="calc-btn" data-value="5">5</button>
+                    <button class="calc-btn" data-value="6">6</button>
+                    <button class="calc-btn operator" data-value="*">*</button>
+                    <button class="calc-btn operator" data-value="/">/</button>
+                    <button class="calc-btn func" data-value="sqrt(">sqrt</button>
+
+                    <button class="calc-btn" data-value="1">1</button>
+                    <button class="calc-btn" data-value="2">2</button>
+                    <button class="calc-btn" data-value="3">3</button>
+                    <button class="calc-btn operator" data-value="-">-</button>
+                    <button class="calc-btn operator" data-value="+">+</button>
+                    <button class="calc-btn const" data-value="e">e</button>
+
+                    <button class="calc-btn" data-value="0">0</button>
+                    <button class="calc-btn" data-value=".">.</button>
+                    <button class="calc-btn empty" data-value=" "></button>
+                    <button class="calc-btn empty" data-value=" "></button>
+                    <button class="calc-btn" data-value="=">=</button>
+                    <button class="calc-btn const" data-value="pi">π</button>
+                </div>
+
+                <button id="solveButton">Calcular Ecuación</button>
+                <div id="loading" class="hidden">Resolviendo Ecuacion...</div>
+                <div id="error" class="hidden error-message"></div>
+            </div>
+
+            <div id="solution-calculator-container-output">
+                <div id="result">
+                    <h2>Solución:</h2>
+                    <pre id="solutionOutput"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
