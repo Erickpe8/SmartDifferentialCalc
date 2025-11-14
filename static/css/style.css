@@ -1,0 +1,185 @@
+body {
+    font-family: 'Iter', sans-serif;
+    margin: 28px;
+    background-color: #EFEFD0;
+    user-select: none;
+}
+
+#container-app {
+    background-color: #F7C59F;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    padding: 22px;
+    margin: 28px auto;
+    max-width: 1200px;
+}
+
+#app-calculator {
+    display: flex;
+    gap: 50px; 
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#calculator-container-input-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+#calculator-container-input-user textarea {
+    width: 100%;
+    height: 100px;
+    font-family: 'Iter', sans-serif;
+    font-size: 18px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#calculatorButtons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.calc-btn {
+    padding: 15px 10px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc-btn img {
+    max-width: 70%; 
+    max-height: 70%; 
+    height: auto;
+    display: block;
+}
+
+.calc-btn:hover {
+    background-color: #FF6B35;
+}
+
+.calc-btn.empty {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+}
+
+.calc-btn.empty:hover {
+    background-color: transparent; /* No hover effect for empty buttons */
+}
+
+#solveButton {
+    background-color: #004E89;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    transition:
+        color .3s ease,
+        background-color .3s ease;
+}
+
+#solveButton:hover {
+    background-color: #1A659E;
+}
+
+#solveButton:disabled {
+    background-color: #000000;
+    color: white;
+    cursor: not-allowed;
+}
+
+#loading {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
+    text-align: center;
+    width: 100%;
+}
+
+#solution-calculator-container-output {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px
+}
+
+#result {
+    margin-top: 20px;
+    padding-top: 0;
+}
+
+#solutionOutput {
+    background-color: #e9e9e9;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%; /* Ensure it takes full width of its parent */
+    max-width: 100%; /* Prevent it from exceeding parent width */
+    min-height: 100px; /* Minimum height for visibility */
+    max-height: 60vh; /* Max height relative to viewport height, allows scrolling */
+    box-sizing: border-box;
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    white-space: pre-wrap;
+    font-family: 'Math', serif; /* Ensure 'Math' font is defined or use a fallback */
+}
+
+.hidden {
+    display: none;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 768px) {
+    #app-calculator {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #calculator-container-input-user,
+    #solution-calculator-container-output {
+        max-width: 100%;
+    }
+
+    #container-app {
+        margin: 15px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    #calculatorButtons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .calc-btn {
+        font-size: 16px;
+        padding: 10px 5px;
+    }
+}
