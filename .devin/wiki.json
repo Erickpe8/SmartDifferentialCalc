@@ -1,0 +1,33 @@
+{
+    "repo_notas": "La wiki documenta el proyecto SmartDiffCalc, una calculadora de ecuaciones diferenciales basada en Flask, con interfaz web en HTML/CSS/JS e integración con la API de DeepSeek y SymPy. Toda la documentación debe estar en español, con tono técnico pero claro, orientada tanto a estudiantes de ingeniería como a desarrolladores. No documentar el entorno virtual 'venv', solo el código de la aplicación (app.py, templates, static).",
+
+    "paginas": [
+        "Introduccion",
+        "Arquitectura_general",
+        "Instalacion_y_configuracion",
+        "Estructura_del_proyecto",
+        "Flujo_de_uso",
+        "Frontend_Calculadora",
+        "Backend_API_solve_ode",
+        "Integracion_con_DeepSeek",
+        "Manejo_de_ecuaciones_y_simbolos",
+        "Manejo_de_errores_y_respuestas",
+        "Roadmap_y_mejoras",
+        "Guia_para_contribuidores"
+    ],
+
+    "pagina_notas": {
+        "Introduccion": "Explicar qué es SmartDiffCalc, su objetivo principal (resolver ecuaciones diferenciales ordinarias apoyándose en IA), a quién está dirigido (estudiantes, docentes, devs) y en qué se diferencia de una calculadora simbólica tradicional. Mencionar de forma breve que usa Flask, SymPy y la API de DeepSeek.",
+        "Arquitectura_general": "Describir la arquitectura a alto nivel: aplicación Flask en app.py, una vista principal que devuelve templates/index.html, frontend en static/css y static/js, y comunicación cliente-servidor mediante fetch hacia el endpoint /solve_ode. Incluir un diagrama conceptual de flujo: Usuario -> Interfaz web -> Flask (/solve_ode) -> DeepSeek API + SymPy -> Respuesta JSON -> Render en la página.",
+        "Instalacion_y_configuracion": "Incluir requisitos (Python 3.x, pip), pasos para crear y activar un entorno virtual, instalar dependencias (por ejemplo, pip install -r requirements.txt si existe, o listar manualmente Flask, python-dotenv, requests, sympy). Explicar la creación del archivo .env con la variable DEEPSEEK_API_KEY y cómo ejecutar la app con 'python app.py'. Mencionar el puerto por defecto (http://localhost:5000).",
+        "Estructura_del_proyecto": "Describir la estructura de carpetas real del repositorio: app.py, templates/index.html, static/css/style.css, static/js/main.js, static/images/borrar-icon.png, y la carpeta venv que se debe ignorar en la documentación. Explicar el rol de cada carpeta (templates para vistas, static para recursos estáticos, app.py como punto de entrada de la aplicación Flask).",
+        "Flujo_de_uso": "Explicar, paso a paso, cómo un usuario interactúa con la aplicación: abrir la página principal, escribir una ecuación diferencial en el textarea (por ejemplo, 'dy/dx = y'), usar los botones de la calculadora para construir la ecuación, pulsar el botón 'Calcular Ecuación', esperar el indicador de carga y leer la solución devuelta. Incluir ejemplos concretos de ecuaciones sencillas.",
+        "Frontend_Calculadora": "Documentar la vista templates/index.html y el comportamiento implementado en static/js/main.js. Explicar la existencia del textarea 'equationInput', el botón 'solveButton', el contenedor de botones de la calculadora 'calculatorButtons' y el elemento donde se muestra la solución. Describir cómo los botones insertan texto en la ecuación (variables, operadores, derivadas como d/dx, funciones como sin, cos, exp, etc.) y cómo se gestiona la UX (mensajes de error, indicador de carga, cambio de texto del botón).",
+        "Backend_API_solve_ode": "Documentar el endpoint /solve_ode definido en app.py. Explicar que acepta peticiones POST con JSON en el formato { 'equation': '...' }. Especificar el flujo: validación de que existe DEEPSEEK_API_KEY, validación de que se recibió una ecuación, construcción del prompt que se envía a la API de DeepSeek, envío de la petición con requests.post, lectura de la respuesta, extracción del texto con la solución y finalmente el retorno de un JSON { 'solution': '...' } o { 'error': '...' } con los códigos HTTP apropiados (400, 500, etc.).",
+        "Integracion_con_DeepSeek": "Describir en detalle cómo se configura DEEPSEEK_API_KEY desde el archivo .env usando python-dotenv (load_dotenv). Explicar la URL DEEPSEEK_API_URL, la estructura del payload (modelo, messages, stream) y los headers de autorización. Detallar el contenido del prompt: pedir que resuelva la ecuación diferencial paso a paso, en español, y sin textos de saludo ni conclusión. Explicar las consideraciones de seguridad (no exponer la API key en el frontend ni en el repositorio público).",
+        "Manejo_de_ecuaciones_y_simbolos": "Explicar qué tipo de ecuaciones se espera que el usuario ingrese (ODEs simples, notación con dy/dx, uso de funciones comunes como sin, cos, exp). Comentar el posible rol de SymPy (sympify, Eq, Function, dsolve, Derivative) en el backend para validación o ejemplos. Aclarar las limitaciones conocidas: posibles errores si la ecuación está mal escrita, casos en los que la IA devuelve una respuesta ambigua o muy larga, etc.",
+        "Manejo_de_errores_y_respuestas": "Documentar cómo se gestionan los errores en app.py: falta de API key, falta de ecuación en el cuerpo de la petición, errores de red o de la API de DeepSeek (requests.exceptions.RequestException) y errores internos genéricos. Explicar el formato JSON de los errores, con mensajes claros para el usuario. Incluir también cómo el frontend (main.js) muestra estos errores en la interfaz (por ejemplo, usando un contenedor de error) y cómo evita que el usuario se quede sin feedback.",
+        "Roadmap_y_mejoras": "Listar posibles mejoras futuras del proyecto SmartDiffCalc: soportar sistemas de ecuaciones, mostrar gráficos de soluciones, historial de ecuaciones, selección de nivel de detalle de la explicación, cambio de idioma, modo oscuro, refactorización del backend para soportar múltiples proveedores de IA, pruebas automatizadas, etc. Explicar qué partes del código están pensadas para ser extendidas.",
+        "Guia_para_contribuidores": "Explicar cómo alguien puede contribuir al proyecto: clonar el repositorio, crear rama, seguir convenciones de código, agregar tests antes de abrir un pull request, y cómo levantar la app localmente para probar cambios. Incluir buenas prácticas para no subir el archivo .env ni la API key al repositorio. Opcionalmente, definir un estilo de mensajes de commit y lineamientos mínimos de calidad del código."
+    }
+}
