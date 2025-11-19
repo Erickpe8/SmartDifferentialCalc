@@ -3,23 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepSeek ODE Solver</title>
+    <title>SmartDifferentialCalc</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- OPTIMIZACIÓN: Renderizado matemático elegante -->
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['\\(', '\\)']] },
+        svg: { fontCache: 'global' }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
 </head>
+
 <body>
     <div id="container-app">
+
         <div id="app-calculator">
+            <!-- SECCIÓN DE ENTRADA -->
             <div id="calculator-container-input-user">
-                <h1>Calculadora Ecuaciones Diferenciales</h1>
-                <textarea id="equationInput" placeholder="Ej: dy/dx = y" rows="5"></textarea>
                 
+                <h1 class="title-app">Calculadora de Ecuaciones Diferenciales</h1>
+
+                <textarea id="equationInput" placeholder="Ej: dy/dx = y" rows="5"></textarea>
+
+                <!-- BOTONES DE LA CALCULADORA -->
                 <div id="calculatorButtons">
                     <button class="calc-btn func" data-value="sin(">sin</button>
                     <button class="calc-btn func" data-value="cos(">cos</button>
                     <button class="calc-btn func" data-value="tan(">tan</button>
                     <button class="calc-btn func" data-value="log(">log</button>
                     <button class="calc-btn func" data-value="exp(">exp</button>
-                    <button class="calc-btn clear" data-value="C"><img src="{{ url_for('static', filename='images/borrar-icon.png') }}" alt="borrar icon"></button>
+                    <button class="calc-btn clear" data-value="C">
+                        <img src="{{ url_for('static', filename='images/borrar-icon.png') }}" alt="borrar">
+                    </button>
 
                     <button class="calc-btn var" data-value="x">x</button>
                     <button class="calc-btn var" data-value="y">y</button>
@@ -57,19 +74,27 @@
                     <button class="calc-btn const" data-value="pi">π</button>
                 </div>
 
-                <button id="solveButton">Calcular Ecuación</button>
-                <div id="loading" class="hidden">Resolviendo Ecuacion...</div>
+                <button id="solveButton" class="btn-primary">Calcular Ecuación</button>
+
+                <div id="loading" class="hidden loading-msg">Resolviendo ecuación...</div>
                 <div id="error" class="hidden error-message"></div>
             </div>
 
+            <!-- SECCIÓN DE SALIDA -->
             <div id="solution-calculator-container-output">
-                <div id="result">
-                    <h2>Solución:</h2>
-                    <pre id="solutionOutput"></pre>
+                <div id="result" class="solution-box">
+
+                    <h2>Solución</h2>
+
+                    <!-- CAMBIO CRÍTICO: Usamos <div> para permitir HTML y LaTeX renderizado -->
+                    <div id="solutionOutput" class="solution-text"></div>
+
                 </div>
             </div>
         </div>
+
     </div>
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
