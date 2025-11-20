@@ -26,6 +26,17 @@
 
                 <textarea id="equationInput" placeholder="Ej: dy/dx = y" rows="5"></textarea>
 
+                <div id="initialConditionsContainer">
+                    <div class="condition-group">
+                        <label for="initialConditionC1">C<sup>1</sup></label>
+                        <input type="text" id="initialConditionC1" class="initial-condition-input" placeholder="Valor para C¹">
+                    </div>
+                    <div class="condition-group">
+                        <label for="initialConditionC2">C<sup>2</sup></label>
+                        <input type="text" id="initialConditionC2" class="initial-condition-input" placeholder="Valor para C²">
+                    </div>
+                </div>
+
                 <div id="calculatorButtons">
                     <button class="calc-btn func" data-value="sin(">sin</button>
                     <button class="calc-btn func" data-value="cos(">cos</button>
@@ -72,9 +83,11 @@
                     <button class="calc-btn const" data-value="pi">π</button>
                 </div>
 
-                <button id="solveButton" class="btn-primary">Calcular Ecuación</button>
-                <div id="loading" class="hidden">Resolviendo...</div>
-                <div id="error" class="hidden error-message"></div>
+                <div id="buttons-calculation-app">
+                    <button id="solveButton" class="btn-primary">Calcular Ecuación</button>
+                    <div id="loading" class="hidden">Resolviendo...</div>
+                    <div id="error" class="hidden error-message"></div>
+                </div>
             </div>
             <div id="solution-calculator-container-output">
                 <div id="result" class="solution-box">
