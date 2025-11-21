@@ -27,14 +27,14 @@
                 <textarea id="equationInput" placeholder="Ej: dy/dx = y" rows="5"></textarea>
 
                 <div id="initialConditionsContainer">
-                    <div class="condition-group">
-                        <label for="initialConditionC1">C<sup>1</sup></label>
-                        <input type="text" id="initialConditionC1" class="initial-condition-input" placeholder="Valor para C¹">
+                    <div class="initial-condition-item">
+                        <label>Condición Inicial 1:</label>
+                        <input type="text" class="initial-condition-input" placeholder="Ej: y(0)=1">
                     </div>
-                    <div class="condition-group">
-                        <label for="initialConditionC2">C<sup>2</sup></label>
-                        <input type="text" id="initialConditionC2" class="initial-condition-input" placeholder="Valor para C²">
-                    </div>
+                </div>
+                <div id="initialConditionButtons">
+                    <button id="addCondition" class="btn-secondary">Añadir Condición</button>
+                    <button id="removeCondition" class="btn-secondary" disabled>Quitar Última</button>
                 </div>
 
                 <div id="calculatorButtons">

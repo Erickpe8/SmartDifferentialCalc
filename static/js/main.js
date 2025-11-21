@@ -5,6 +5,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingIndicator = document.getElementById('loading');
     const errorDisplay = document.getElementById('error');
     const calculatorButtonsContainer = document.getElementById('calculatorButtons');
+    const initialConditionsContainer = document.getElementById('initialConditionsContainer');
+    const addConditionButton = document.getElementById('addCondition');
+    const removeConditionButton = document.getElementById('removeCondition');
+
+    let conditionCount = 1; // Start with 1 condition input field
+
+    // Function to update button states based on conditionCount
+    const updateConditionButtons = () => {
+        addConditionButton.disabled = conditionCount >= 3;
+        removeConditionButton.disabled = conditionCount <= 1;
+    };
+
+    // Add Condition Button Event Listener
+    addConditionButton.addEventListener('click', () => {
+        console.log('Add Condition button clicked');
+        if (conditionCount < 3) {
+            conditionCount++;
+            const conditionItem = document.createElement('div');
+            conditionItem.classList.add('initial-condition-item');
+            conditionItem.innerHTML = `
+                <label>Condición Inicial ${conditionCount}:</label>
+                <input type="text" class="initial-condition-input" placeholder="Ej: y(0)=1">
+            `;
+            initialConditionsContainer.appendChild(conditionItem);
+            updateConditionButtons();
+        }
+    });
+
+    // Remove Condition Button Event Listener
+    removeConditionButton.addEventListener('click', () => {
+        if (conditionCount > 1) {
+            initialConditionsContainer.lastElementChild.remove();
+            conditionCount--;
+            updateConditionButtons();
+        }
+    });
+
+    // Initial button state setup
+    updateConditionButtons();
 
     solveButton.addEventListener('click', async () => {
         const equation = equationInput.value.trim();
@@ -21,8 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
         solveButton.textContent = "Resolviendo ecuación...";
         solveButton.disabled = true;
 
-        const c1 = document.getElementById('initialConditionC1').value.trim();
-        const c2 = document.getElementById('initialConditionC2').value.trim();
+        const initialConditions = Array.from(initialConditionsContainer.querySelectorAll('.initial-condition-input'))
+                                     .map(input => input.value.trim())
+                                     .filter(value => value !== '');
 
         try {
             const response = await fetch('/solve_ode', {
@@ -30,8 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     equation: equation,
-                    c1: c1,
-                    c2: c2
+                    initial_conditions: initialConditions
                 }),
             });
 
@@ -116,19 +155,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatSolution(text) {
         if (!text) return "";
 
-        let cleaned = text;
+        let cleaned = text; // Start with original text, do not remove all backslashes
 
-        cleaned = cleaned
-            .replace(/\\\\/g, "")
-            .replace(/\\\(/g, "\\(")
-            .replace(/\\\)/g, "\\)")
-            .replace(/\\n/g, "\n")
-            .replace(/\*\*(Paso.*?)\*\*/g, "<h3>$1</h3>")
-            .replace(/\*\*/g, "")
-            .replace(/\n/g, "<br>");
+        // Convert double asterisks to h3 for steps
+        cleaned = cleaned.replace(/\*\*(Paso.*?)\*\*/g, "<h3>$1</h3>");
+        
+        // Convert remaining double asterisks (if any) to bold, might not be needed if deepseek doesn't use them otherwise
+        cleaned = cleaned.replace(/\*\*/g, ""); 
+        
+        // Convert newlines to <br> for display
+        cleaned = cleaned.replace(/\n/g, "<br>");
 
-        cleaned = cleaned
-            .replace(/\\\[([\s\S]*?)\\\]/g, "<div class='math-block'>\\[$1\\]</div>");
+        // Handle MathJax block equations (\[ ... \])
+        // Need to ensure the backslashes are preserved for MathJax to render correctly.
+        // We want to wrap the content that MathJax will process.
+        cleaned = cleaned.replace(/\\\[([\s\S]*?)\\\]/g, "<div class='math-block'>\\[$1\\]</div>");
+
+        // Handle inline MathJax (\( ... \)) if it's explicitly in the response
+        // DeepSeek might return \\( or \( depending on its formatting.
+        cleaned = cleaned.replace(/\\\((.*?)\\\)/g, "\\($1\\)");
+        cleaned = cleaned.replace(/\\\( (.*?) \\\)/g, "\\($1\\)"); // Handle spaces around parentheses if any
 
         return cleaned;
     }

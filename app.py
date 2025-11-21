@@ -23,8 +23,7 @@ def solve_ode():
 
     data = request.get_json()
     equation_str = data.get('equation')
-    c1_val = data.get('c1')
-    c2_val = data.get('c2')
+    initial_conditions = data.get('initial_conditions', []) # Get initial conditions, default to empty list
 
     if not equation_str:
         return jsonify({"error": "No se proporcionó ninguna ecuación."}), 400
@@ -32,16 +31,14 @@ def solve_ode():
     try:
         # Preparar el prompt para DeepSeek
         prompt = f"Resuelve la siguiente ecuación diferencial ordinaria: {equation_str}."
-        
-        conditions = []
-        if c1_val:
-            conditions.append(f"C1 = {c1_val}")
-        if c2_val:
-            conditions.append(f"C2 = {c2_val}")
 
-        if conditions:
-            prompt += f" Usa las siguientes condiciones iniciales o valores de constantes: {', '.join(conditions)}."
-            
+        if initial_conditions:
+            conditions_str = ", ".join(initial_conditions)
+            prompt += f" Usa las siguientes condiciones iniciales: {conditions_str}."
+            prompt += " Proporciona la solución particular y calcula las constantes de integración (C1, C2, o las que sean necesarias) basándote en la ecuación proporcionada y estas condiciones iniciales."
+        else:
+            prompt += " Proporciona la solución particular y calcula las constantes de integración (C1, C2, o las que sean necesarias) basándote únicamente en la ecuación proporcionada."
+        
         prompt += " Proporciona únicamente los pasos detallados de la solución, explicando cada uno de forma clara y concisa, sin saludos ni texto introductorio o conclusivo."
 
         headers = {
@@ -62,18 +59,6 @@ def solve_ode():
 
         deepseek_response = response.json()
         solution_text = deepseek_response['choices'][0]['message']['content']
-
-        # Opcional: Intentar parsear y verificar con SymPy
-        # Esto es más complejo y depende de cómo DeepSeek formatee la respuesta.
-        # Por ahora, solo devolveremos el texto.
-        # Si DeepSeek devuelve una solución en un formato específico, podrías intentar:
-        # x = symbols('x')
-        # y = Function('y')
-        # # Ejemplo: si DeepSeek devuelve "y(x) = C1*exp(x)"
-        # # parsed_solution = sympify("C1*exp(x)")
-        # # ode_sympy = Eq(Derivative(y(x), x), y(x)) # Ejemplo de ODE
-        # # solution_sympy = dsolve(ode_sympy, y(x))
-        # # print(solution_sympy)
 
         return jsonify({"solution": solution_text})
 
